@@ -62,9 +62,9 @@ const Home = ({ user, logout }) => {
     });
   };
 
-  const postMessage = (body) => {
+  const postMessage = async (body) => {
     try {
-      const data = saveMessage(body);
+      const data = await saveMessage(body);
 
       if (!body.conversationId) {
         addNewConvo(body.recipientId, data.message);
@@ -80,6 +80,7 @@ const Home = ({ user, logout }) => {
 
   const addNewConvo = useCallback(
     (recipientId, message) => {
+      console.log(recipientId, message)
       conversations.forEach((convo) => {
         if (convo.otherUser.id === recipientId) {
           convo.messages.push(message);
@@ -87,7 +88,8 @@ const Home = ({ user, logout }) => {
           convo.id = message.conversationId;
         }
       });
-      setConversations(conversations);
+      // create copy so child components rerenders otherwise shallow comparison fails to detect change
+      setConversations([...conversations]);
     },
     [setConversations, conversations]
   );
@@ -112,7 +114,8 @@ const Home = ({ user, logout }) => {
           convo.latestMessageText = message.text;
         }
       });
-      setConversations(conversations);
+      // create copy so child components rerenders otherwise shallow comparison fails to detect change
+      setConversations([...conversations]);
     },
     [setConversations, conversations]
   );
