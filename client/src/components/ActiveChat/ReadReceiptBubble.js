@@ -11,16 +11,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ReadReceipt = ({ otherUser }) => {
+const ReadReceiptBubble = ({ otherUser, hasRead }) => {
   const classes = useStyles();
-  
+
   return (
-    <Avatar
-    alt={otherUser.username}
-    src={otherUser.photoUrl}
-    className={classes.avatar}
-  />
+    <>
+      {hasRead && (
+        <Avatar
+          alt={otherUser.username}
+          src={otherUser.photoUrl}
+          className={classes.avatar}
+        />
+      )}
+    </>
   );
 };
 
-export default ReadReceipt;
+export default ReadReceiptBubble;
