@@ -71,6 +71,16 @@ router.get("/", async (req, res, next) => {
       const latestMessageIndex = convoJSON.messages.length - 1;
       convoJSON.latestMessageText = convoJSON.messages[latestMessageIndex].text;
       convoJSON.latestMessageUpdatedAt = convoJSON.messages[latestMessageIndex].updatedAt;
+
+      // set property for unread messages
+      convoJSON.unreadMessages = 0;
+      for (let j = 0; j < convoJSON.messages.length; j++) {
+        const didOtherUserSendMessage = (convoJSON.otherUser.id === convoJSON.messages[j].senderId);
+        if (didOtherUserSendMessage && !convoJSON.messages[j].hasRead) {
+          convoJSON.unreadMessages++;
+        }
+      }
+
       conversations[i] = convoJSON;
     }
 
