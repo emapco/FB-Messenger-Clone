@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@material-ui/core";
-import { ReadReceipt } from ".";
+import { ReadReceiptBubble } from ".";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -37,7 +37,7 @@ const SenderBubble = ({ text, time, otherUser }) => {
       <Box className={classes.bubble}>
         <Typography className={classes.text}>{text}</Typography>
       </Box>
-      <ReadReceipt otherUser={otherUser} />
+      <ReadReceiptBubble otherUser={otherUser} />
     </Box>
   );
 };
