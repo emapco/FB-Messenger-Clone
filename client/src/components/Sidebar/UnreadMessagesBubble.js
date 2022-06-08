@@ -15,20 +15,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const UnreadMessagesCount = ({ conversation }) => {
+const UnreadMessagesBubble = ({ conversation }) => {
   const classes = useStyles();
 
   return (
-    <div>
-      {conversation.unreadMessages > 0 &&
+    <>
+      {conversation.unreadMessages > 0 && (
         <Box className={classes.bubble}>
           <Typography className={classes.text}>
             {conversation.unreadMessages}
           </Typography>
         </Box>
-      }
-    </div>
+      )}
+    </>
   );
 };
 
-export default UnreadMessagesCount;
+export default UnreadMessagesBubble;
