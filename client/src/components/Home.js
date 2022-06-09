@@ -54,6 +54,11 @@ const Home = ({ user, logout }) => {
     return data;
   };
 
+  const saveExistingMessage = async (body) => {
+    const { data } = await axios.put("/api/messages", body);
+    return data;
+  };
+
   const sendMessage = (data, body) => {
     socket.emit("new-message", {
       message: data.message,
@@ -78,6 +83,14 @@ const Home = ({ user, logout }) => {
     }
   };
 
+  const putMessage = async (body) => {
+    try {
+      await saveExistingMessage(body);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const addNewConvo = useCallback((recipientId, message) => {
     setConversations((prev) =>
       prev.map((convo) => {
@@ -85,7 +98,7 @@ const Home = ({ user, logout }) => {
           const convoCopy = { ...convo };
           convoCopy.messages.push(message);
           convoCopy.latestMessageText = message.text;
-          convoCopy.latestMessageUpdatedAt = message.updatedAt;
+          convoCopy.latestMessageCreatedAt = message.updatedAt;
           convoCopy.id = message.conversationId;
           return convoCopy;
         } else {
@@ -105,7 +118,7 @@ const Home = ({ user, logout }) => {
         messages: [message],
       };
       newConvo.latestMessageText = message.text;
-      newConvo.latestMessageUpdatedAt = message.updatedAt;
+      newConvo.latestMessageCreatedAt = message.updatedAt;
       setConversations((prev) => [newConvo, ...prev]);
     }
 
@@ -115,7 +128,7 @@ const Home = ({ user, logout }) => {
           const convoCopy = { ...convo };
           convoCopy.messages.push(message);
           convoCopy.latestMessageText = message.text;
-          convoCopy.latestMessageUpdatedAt = message.updatedAt;
+          convoCopy.latestMessageCreatedAt = message.updatedAt;
           return convoCopy;
         } else {
           return convo;
@@ -223,6 +236,7 @@ const Home = ({ user, logout }) => {
           conversations={conversations}
           user={user}
           postMessage={postMessage}
+          putMessage={putMessage}
         />
       </Grid>
     </>
