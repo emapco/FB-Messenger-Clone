@@ -4,14 +4,14 @@ import { SenderBubble, OtherUserBubble } from ".";
 import moment from "moment";
 
 const Messages = (props) => {
-  const { messages, otherUser, userId } = props;
+  const { messages, otherUser, user, putMessage } = props;
 
   return (
     <Box>
       {messages.map((message) => {
         const time = moment(message.createdAt).format("h:mm");
 
-        return message.senderId === userId ? (
+        return message.senderId === user.id ? (
           <SenderBubble
             key={message.id}
             text={message.text}
@@ -22,9 +22,11 @@ const Messages = (props) => {
         ) : (
           <OtherUserBubble
             key={message.id}
-            text={message.text}
+            message={message}
             time={time}
             otherUser={otherUser}
+            user={user}
+            putMessage={putMessage}
           />
         );
       })}

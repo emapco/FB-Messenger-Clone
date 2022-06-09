@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography, Avatar } from "@material-ui/core";
+import VisibilitySensor from "react-visibility-sensor";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -31,25 +32,41 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const OtherUserBubble = ({ text, time, otherUser }) => {
+const OtherUserBubble = ({ message, time, otherUser, user, putMessage }) => {
   const classes = useStyles();
+  const { id, text, conversationId, hasRead } = message;
+
+  const handleMessageRead = async (isVisible) => {
+    if (isVisible && !hasRead) {
+      const reqBody = {
+        id,
+        text,
+        conversationId,
+        sender: conversationId ? null : user,
+        hasRead: true,
+      };
+      await putMessage(reqBody);
+    }
+  };
 
   return (
-    <Box className={classes.root}>
-      <Avatar
-        alt={otherUser.username}
-        src={otherUser.photoUrl}
-        className={classes.avatar}
-      />
-      <Box>
-        <Typography className={classes.usernameDate}>
-          {otherUser.username} {time}
-        </Typography>
-        <Box className={classes.bubble}>
-          <Typography className={classes.text}>{text}</Typography>
+    <VisibilitySensor onChange={handleMessageRead}>
+      <Box className={classes.root}>
+        <Avatar
+          alt={otherUser.username}
+          src={otherUser.photoUrl}
+          className={classes.avatar}
+        />
+        <Box>
+          <Typography className={classes.usernameDate}>
+            {otherUser.username} {time}
+          </Typography>
+          <Box className={classes.bubble}>
+            <Typography className={classes.text}>{text}</Typography>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </VisibilitySensor>
   );
 };
 

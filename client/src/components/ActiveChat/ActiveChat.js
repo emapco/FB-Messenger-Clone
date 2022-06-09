@@ -24,6 +24,7 @@ const ActiveChat = ({
   conversations,
   activeConversation,
   postMessage,
+  putMessage,
 }) => {
   const classes = useStyles();
 
@@ -51,7 +52,8 @@ const ActiveChat = ({
                 <Messages
                   messages={conversation.messages}
                   otherUser={conversation.otherUser}
-                  userId={user.id}
+                  user={user}
+                  putMessage={putMessage}
                 />
                 <Input
                   otherUser={conversation.otherUser}
