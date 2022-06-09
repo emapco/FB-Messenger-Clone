@@ -32,17 +32,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const OtherUserBubble = ({ message, time, otherUser, user, putMessage }) => {
+const OtherUserBubble = ({ message, time, otherUser, putMessage }) => {
   const classes = useStyles();
-  const { id, text, conversationId, hasRead } = message;
+  const { id, text, hasRead } = message;
 
   const handleMessageRead = async (isVisible) => {
     if (isVisible && !hasRead) {
       const reqBody = {
         id,
         text,
-        conversationId,
-        sender: conversationId ? null : user,
         hasRead: true,
       };
       await putMessage(reqBody);
