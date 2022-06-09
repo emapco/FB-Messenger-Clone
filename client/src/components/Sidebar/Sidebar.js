@@ -37,7 +37,7 @@ const Sidebar = ({
           conversation.otherUser.username.includes(searchTerm)
         )
         .sort((a, b) => 
-          a.latestMessageUpdatedAt < b.latestMessageUpdatedAt
+          a.latestMessageCreatedAt < b.latestMessageCreatedAt
         )
         .map((conversation) => {
           return (
