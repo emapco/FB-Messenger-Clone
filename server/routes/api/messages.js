@@ -43,4 +43,28 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// expects { id, text, hasRead } in body
+router.put("/", async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+    const { id, text, hasRead } = req.body;
+
+    const message = await Message.findOne({ where: { id: id } });
+    if (!message) {
+      next('message not found');
+    }
+
+    message.text = text;
+    message.hasRead = hasRead;
+    await message.save();
+
+    return res.json({ message });
+
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
