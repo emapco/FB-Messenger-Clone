@@ -12,7 +12,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.0",
     "react-visibility-sensor": "^5.1.1",
-    "socket.io-client": "^3.0.4"
+    "socket.io-client": "^3.0.4",
+    "@types/react": "^17.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
