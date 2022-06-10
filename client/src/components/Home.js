@@ -148,11 +148,11 @@ const Home = ({ user, logout }) => {
 
   const updateMessageInConversation = useCallback((data) => {
     const { message } = data;
-
     setConversations((prev) =>
       prev.map((convo) => {
         if (convo.id === message.conversationId) {
           const convoCopy = { ...convo };
+          convoCopy.unreadMessages--;
           convoCopy.messages = convoCopy.messages.map((prevMessage) => {
             return (prevMessage.id === message.id) ? message : prevMessage;
           });
