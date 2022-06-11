@@ -12,26 +12,11 @@ const bob = {
 };
 
 describe("Feature: Implement a read status for messages", () => {
-  it("setup", () => {
-    cy.signup(alice.username, alice.email, alice.password);
-    cy.logout();
-    cy.signup(bob.username, bob.email, bob.password);
-    cy.logout();
-
-    cy.login(alice.username, alice.password);
-    cy.get("input[name=search]").type("Bob");
-    cy.contains("Bob").click();
-
-    cy.get("input[name=text]").type("First message{enter}");
-    cy.get("input[name=text]").type("Second message{enter}");
-    cy.get("input[name=text]").type("Third message{enter}");
-  });
-
   it("displays correct number of new messages", () => {
     cy.login(bob.username, bob.password);
 
-    cy.contains("Third message");
-    cy.contains("3");
+    cy.contains("Sixth message");
+    cy.contains("6");
 
     cy.contains("Alice").click();
   });
@@ -50,6 +35,9 @@ describe("Feature: Implement a read status for messages", () => {
       cy.wrap($list).children().eq(0).find('svg').should("be.visible")
       cy.wrap($list).children().eq(1).find('svg').should("be.visible")
       cy.wrap($list).children().eq(2).find('svg').should("be.visible")
+      cy.wrap($list).children().eq(3).find('svg').should("be.visible")
+      cy.wrap($list).children().eq(4).find('svg').should("be.visible")
+      cy.wrap($list).children().eq(5).find('svg').should("be.visible")
     });
   });
 });
