@@ -24,6 +24,7 @@ const ActiveChat = ({
   conversations,
   activeConversation,
   postMessage,
+  putMessages,
 }) => {
   const classes = useStyles();
 
@@ -36,6 +37,13 @@ const ActiveChat = ({
   const isConversation = (obj) => {
     return obj !== {} && obj !== undefined;
   };
+
+  if (activeConversation && conversation.unreadMessages) {
+    const reqBody = {
+      recipientId: conversation.otherUser.id,
+    };
+    putMessages(reqBody);
+  }
 
   return (
     <Box className={classes.root}>

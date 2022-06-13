@@ -13,15 +13,27 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     letterSpacing: -0.2,
   },
-  previewText: {
-    fontSize: 12,
-    color: "#9CADC8",
-    letterSpacing: -0.17,
-  },
+  previewText: (props) => ({
+    fontWeight: props.fontWeight,
+    fontSize: props.fontSize,
+    color: props.color,
+    letterSpacing: props.letterSpacing
+  }),
 }));
 
 const ChatContent = ({ conversation }) => {
-  const classes = useStyles();
+  let styleProps = {
+    fontSize: 12,
+    color: "#9CADCB",
+    letterSpacing: -0.17,
+  };
+  if (conversation.unreadMessages) {
+    styleProps = {
+      fontWeight: "bold",
+      color: "#000000",
+    };
+  }
+  const classes = useStyles(styleProps);
 
   const { otherUser } = conversation;
   const latestMessageText = conversation.id && conversation.latestMessageText;
@@ -32,7 +44,9 @@ const ChatContent = ({ conversation }) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
+        <Typography
+          className={classes.previewText}
+        >
           {latestMessageText}
         </Typography>
       </Box>

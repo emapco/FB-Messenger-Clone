@@ -35,21 +35,21 @@ const OtherUserBubble = ({ text, time, otherUser }) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.root}>
-      <Avatar
-        alt={otherUser.username}
-        src={otherUser.photoUrl}
-        className={classes.avatar}
-      />
-      <Box>
-        <Typography className={classes.usernameDate}>
-          {otherUser.username} {time}
-        </Typography>
-        <Box className={classes.bubble}>
-          <Typography className={classes.text}>{text}</Typography>
+      <Box className={classes.root}>
+        <Avatar
+          alt={otherUser.username}
+          src={otherUser.photoUrl}
+          className={classes.avatar}
+        />
+        <Box>
+          <Typography className={classes.usernameDate}>
+            {otherUser.username} {time}
+          </Typography>
+          <Box className={classes.bubble}>
+            <Typography className={classes.text}>{text}</Typography>
+          </Box>
         </Box>
       </Box>
-    </Box>
   );
 };
 

@@ -43,4 +43,38 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// expects { recipientId } in body
+router.put("/read", async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+    const senderId = req.user.id;
+    const { recipientId } = req.body;
+
+    const conversation = await Conversation.findConversation(
+      senderId,
+      recipientId
+    );
+    if (!conversation) {
+      next();
+    }
+
+    // set received messages hasRead to true
+    const values = { hasRead: true };
+    const options = {
+      where: {
+        conversationId: conversation.id,
+        senderId: recipientId,
+        hasRead: false
+      },
+    };
+    await Message.update(values, options);
+
+    return res.json({conversationId: conversation.id});
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
