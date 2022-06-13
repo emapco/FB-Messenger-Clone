@@ -54,11 +54,6 @@ const Home = ({ user, logout }) => {
     return data;
   };
 
-  const saveExistingMessage = async (body) => {
-    const { data } = await axios.put("/api/messages", body);
-    return data;
-  };
-
   const sendMessage = (data, body) => {
     socket.emit("new-message", {
       message: data.message,
@@ -69,7 +64,7 @@ const Home = ({ user, logout }) => {
 
   const readMessage = (data) => {
     socket.emit("read-message", {
-        message: data.message,
+      conversationId: data.conversationId,
     });
   };
 
@@ -89,9 +84,9 @@ const Home = ({ user, logout }) => {
     }
   };
 
-  const putMessage = async (body) => {
+  const putMessages = async (body) => {
     try {
-      const data = await saveExistingMessage(body);
+      const { data } = await axios.put("/api/messages/read", body);
 
       updateMessageInConversation(data);
       readMessage(data);
@@ -108,6 +103,7 @@ const Home = ({ user, logout }) => {
           convoCopy.messages.push(message);
           convoCopy.latestMessageText = message.text;
           convoCopy.latestMessageCreatedAt = message.updatedAt;
+          convoCopy.unreadMessages = 0;
           convoCopy.id = message.conversationId;
           return convoCopy;
         } else {
@@ -124,10 +120,11 @@ const Home = ({ user, logout }) => {
       const newConvo = {
         id: message.conversationId,
         otherUser: sender,
-        messages: [message],
+        messages: [],
       };
       newConvo.latestMessageText = message.text;
       newConvo.latestMessageCreatedAt = message.updatedAt;
+      newConvo.unreadMessages = 0;
       setConversations((prev) => [newConvo, ...prev]);
     }
 
@@ -138,23 +135,28 @@ const Home = ({ user, logout }) => {
           convoCopy.messages.push(message);
           convoCopy.latestMessageText = message.text;
           convoCopy.latestMessageCreatedAt = message.updatedAt;
+          if (message.senderId !== user.id) {
+            convoCopy.unreadMessages++;
+          }
           return convoCopy;
         } else {
           return convo;
         }
       })
     );
-  }, []);
+  }, [user]);
 
   const updateMessageInConversation = useCallback((data) => {
-    const { message } = data;
+    const { conversationId } = data;
     setConversations((prev) =>
       prev.map((convo) => {
-        if (convo.id === message.conversationId) {
+        if (convo.id === conversationId) {
           const convoCopy = { ...convo };
-          convoCopy.unreadMessages--;
-          convoCopy.messages = convoCopy.messages.map((prevMessage) => {
-            return (prevMessage.id === message.id) ? message : prevMessage;
+          convoCopy.unreadMessages = 0;
+          convoCopy.messages.forEach((message) => {
+            if (message.senderId === user.id) {
+              message.hasRead = true;
+            }
           });
           return convoCopy;
         } else {
@@ -162,7 +164,7 @@ const Home = ({ user, logout }) => {
         }
       })
     );
-  }, []);
+  }, [user]);
 
   const setActiveChat = (username) => {
     setActiveConversation(username);
@@ -265,7 +267,7 @@ const Home = ({ user, logout }) => {
           conversations={conversations}
           user={user}
           postMessage={postMessage}
-          putMessage={putMessage}
+          putMessages={putMessages}
         />
       </Grid>
     </>

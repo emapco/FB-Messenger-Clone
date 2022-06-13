@@ -24,7 +24,7 @@ const ActiveChat = ({
   conversations,
   activeConversation,
   postMessage,
-  putMessage,
+  putMessages,
 }) => {
   const classes = useStyles();
 
@@ -37,6 +37,13 @@ const ActiveChat = ({
   const isConversation = (obj) => {
     return obj !== {} && obj !== undefined;
   };
+
+  if (activeConversation && conversation.unreadMessages) {
+    const reqBody = {
+      recipientId: conversation.otherUser.id,
+    };
+    putMessages(reqBody);
+  }
 
   return (
     <Box className={classes.root}>
@@ -53,7 +60,6 @@ const ActiveChat = ({
                   messages={conversation.messages}
                   otherUser={conversation.otherUser}
                   userId={user.id}
-                  putMessage={putMessage}
                 />
                 <Input
                   otherUser={conversation.otherUser}

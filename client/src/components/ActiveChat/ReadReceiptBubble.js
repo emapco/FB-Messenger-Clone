@@ -11,12 +11,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ReadReceiptBubble = ({ otherUser, hasRead }) => {
+const ReadReceiptBubble = ({ id, otherUser, lastReadMessageId }) => {
   const classes = useStyles();
-
   return (
     <>
-      {hasRead && (
+      {id === lastReadMessageId && (
         <Avatar
           alt={otherUser.username}
           src={otherUser.photoUrl}

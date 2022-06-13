@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SenderBubble = ({ text, time, otherUser, hasRead }) => {
+const SenderBubble = ({ id, text, time, otherUser, lastReadMessageId }) => {
   const classes = useStyles();
 
   return (
@@ -37,7 +37,11 @@ const SenderBubble = ({ text, time, otherUser, hasRead }) => {
       <Box className={classes.bubble}>
         <Typography className={classes.text}>{text}</Typography>
       </Box>
-      <ReadReceiptBubble otherUser={otherUser} hasRead={hasRead} />
+      <ReadReceiptBubble
+        id={id}
+        otherUser={otherUser}
+        lastReadMessageId={lastReadMessageId}
+      />
     </Box>
   );
 };

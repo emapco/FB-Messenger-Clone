@@ -43,25 +43,35 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// expects { id, text, hasRead } in body
-router.put("/", async (req, res, next) => {
+// expects { recipientId } in body
+router.put("/read", async (req, res, next) => {
   try {
     if (!req.user) {
       return res.sendStatus(401);
     }
-    const { id, text, hasRead } = req.body;
+    const senderId = req.user.id;
+    const { recipientId } = req.body;
 
-    const message = await Message.findOne({ where: { id: id } });
-    if (!message) {
-      next('message not found');
+    const conversation = await Conversation.findConversation(
+      senderId,
+      recipientId
+    );
+    if (!conversation) {
+      next();
     }
 
-    message.text = text;
-    message.hasRead = hasRead;
-    await message.save();
+    // set received messages hasRead to true
+    const values = { hasRead: true };
+    const options = {
+      where: {
+        conversationId: conversation.id,
+        senderId: recipientId,
+        hasRead: false
+      },
+    };
+    await Message.update(values, options);
 
-    return res.json({ message });
-
+    return res.json({conversationId: conversation.id});
   } catch (error) {
     next(error);
   }

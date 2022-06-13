@@ -32,11 +32,6 @@ describe("Feature: Implement a read status for messages", () => {
       const $secondMessage = Cypress.$(':contains("Second message")');
       const $list = $firstMessage.parents().has($secondMessage).first();
       
-      cy.wrap($list).children().eq(0).find('svg').should("be.visible")
-      cy.wrap($list).children().eq(1).find('svg').should("be.visible")
-      cy.wrap($list).children().eq(2).find('svg').should("be.visible")
-      cy.wrap($list).children().eq(3).find('svg').should("be.visible")
-      cy.wrap($list).children().eq(4).find('svg').should("be.visible")
       cy.wrap($list).children().eq(5).find('svg').should("be.visible")
     });
   });
