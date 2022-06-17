@@ -10,8 +10,8 @@ const Message = db.define("message", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  hasRead: {
-    type: Sequelize.BOOLEAN, 
+  haveReadRecipients: {
+    type: Sequelize.ARRAY(Sequelize.INTEGER), 
     defaultValue: false,
   },
 });
