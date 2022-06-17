@@ -26,4 +26,4 @@ Conversation.findConversation = async function (userId) {
   return conversation;
 };
 
-module.exports = Conversation;
+module.exports = Conversation, ConversationMembers;
