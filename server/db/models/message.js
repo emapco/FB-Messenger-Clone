@@ -9,11 +9,18 @@ const Message = db.define("message", {
   senderId: {
     type: Sequelize.INTEGER,
     allowNull: false,
-  },
-  haveReadRecipients: {
-    type: Sequelize.ARRAY(Sequelize.INTEGER), 
-    defaultValue: false,
-  },
+  }
 });
 
-module.exports = Message;
+const ReadRecipient = db.define("readRecipient", {
+  messageId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  recipientId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  }
+});
+
+module.exports = Message, ReadRecipient;

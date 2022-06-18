@@ -4,26 +4,15 @@ const Message = require("./message");
 
 const Conversation = db.define("conversation", {});
 
-const ConversationMembers = db.define("members", {
-  members: {
-    type: Sequelize.ARRAY(Sequelize.INTEGER),
+const ConversationMember = db.define("member", {
+  conversationId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  userId: {
+    type: Sequelize.INTEGER,
     allowNull: false,
   }
 });
 
-// find conversation given two user Ids
-
-Conversation.findConversation = async function (userId) {
-  const conversation = await Conversation.findOne({
-    where: {
-      userId: {
-        [Op.in]: members
-      }
-    }
-  });
-
-  // return conversation or null if it doesn't exist
-  return conversation;
-};
-
-module.exports = Conversation, ConversationMembers;
+module.exports = Conversation, ConversationMember;
